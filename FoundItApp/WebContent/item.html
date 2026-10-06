@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoundIt — Item</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="logo sm">Found<span>It</span></span>
+  <div class="navlinks">
+    <a href="dashboard.html">Browse</a>
+    <a href="report.html">Report item</a>
+    <a href="claims.html">My claims</a>
+    <a href="#" id="logout">Logout</a>
+  </div>
+</nav>
+
+<main class="wrap narrow" id="box"></main>
+
+<script src="js/app.js"></script>
+<script>
+  requireLogin();
+  const id = new URLSearchParams(location.search).get('id');
+
+  (async () => {
+    const d = await get('items', {action:'one', id:id});
+
+    if (!d.success) {
+      box.innerHTML = '<p class="muted">Item not found.</p>';
+      return;
+    }
+
+    const it = d.item;
+
+    box.innerHTML = `
+      <span class="pill ${it.itemType.toLowerCase()}">${it.itemType}</span>
+      <span class="pill status">${it.status}</span>
+      <h2>${escapeHtml(it.title)}</h2>
+      <p>${escapeHtml(it.description || '')}</p>
+      <p class="muted">${escapeHtml(it.location || '')} · posted by ${escapeHtml(it.poster)}</p>
+      <div id="claimArea"></div>`;
+
+    const area = document.getElementById('claimArea');
+
+    if (it.isOwner) {
+      area.innerHTML =
+        `<div class="note">This is your posting. Review claims on the
+         <a href="claims.html">My claims</a> page.</div>`;
+
+    } else if (it.status === 'RESOLVED') {
+      area.innerHTML = `<div class="note">This item has already been returned.</div>`;
+
+    } else {
+      area.innerHTML = `
+        <hr>
+        <h3>Claim this item</h3>
+        <p class="qbox">${escapeHtml(it.secretQuestion)}</p>
+        <textarea id="answer" rows="2" placeholder="Your answer"></textarea>
+        <button class="btn" id="send">Submit claim</button>
+        <p class="hint">If approved, collect the item from the college help desk.
+        Never arrange a private meetup.</p>
+        <p id="msg" class="msg"></p>`;
+
+      document.getElementById('send').onclick = async () => {
+        const d2 = await post('claims', {
+          itemId: id,
+          answer: document.getElementById('answer').value.trim()
+        });
+        say(d2.message, d2.success);
+      };
+    }
+  })();
+</script>
+</body>
+</html>

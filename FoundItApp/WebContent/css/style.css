@@ -1,0 +1,190 @@
+/* ==========================================================================
+   FoundIt — Campus Lost & Found Portal
+   ========================================================================== */
+
+/* 1. Design tokens ------------------------------------------------------- */
+:root {
+  --navy:         #1e3a5f;
+  --navy-light:   #2d6a8f;
+  --amber:        #f5a623;
+  --amber-dark:   #dd9010;
+
+  --green:        #1a9c4c;
+  --green-dark:   #1a7c40;
+  --green-bg:     #e3f4e9;
+  --red:          #c33;
+  --red-bg:       #fdeaea;
+
+  --page-bg:      #f3f6f9;
+  --surface:      #fff;
+  --surface-alt:  #eef2f6;
+  --surface-soft: #f6f8fa;
+  --surface-info: #eef4fa;
+
+  --text:         #243447;
+  --text-mid:     #5a6875;
+  --text-label:   #44525f;
+  --text-muted:   #8b98a5;
+  --text-tagline: #7a8794;
+  --text-nav:     #c6d4e2;
+
+  --border:       #d5dde4;
+  --border-soft:  #e4eaf0;
+
+  --shadow-sm:    0 2px 10px rgba(0,0,0,.06);
+  --shadow-md:    0 2px 14px rgba(0,0,0,.07);
+  --shadow-lg:    0 5px 18px rgba(0,0,0,.12);
+  --shadow-xl:    0 12px 40px rgba(0,0,0,.2);
+}
+
+/* 2. Reset & base -------------------------------------------------------- */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Segoe UI', system-ui, sans-serif;
+  background:var(--page-bg);
+  color:var(--text);
+}
+
+h2 { margin-bottom:16px; font-size:21px; }
+h3 { margin:12px 0 8px; font-size:17px; }
+hr { border:none; border-top:1px solid var(--border-soft); margin:18px 0; }
+
+/* 3. Layout -------------------------------------------------------------- */
+.center {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg, var(--navy), var(--navy-light));
+  padding:20px;
+}
+
+.wrap { max-width:960px; margin:28px auto; padding:0 20px; }
+
+.wrap.narrow {
+  max-width:560px; background:var(--surface); border-radius:12px;
+  padding:28px; box-shadow:var(--shadow-md);
+}
+
+/* 4. Branding ------------------------------------------------------------ */
+.logo { font-size:30px; font-weight:700; color:var(--navy); text-align:center; }
+.logo span { color:var(--amber); }
+.logo.sm { font-size:20px; text-align:left; color:var(--surface); }
+.logo.sm span { color:var(--amber); }
+
+.tagline {
+  text-align:center; color:var(--text-tagline);
+  font-size:13px; margin-bottom:22px;
+}
+
+/* 5. Navigation ---------------------------------------------------------- */
+.nav {
+  background:var(--navy); padding:14px 26px; display:flex;
+  justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+}
+
+.navlinks a {
+  color:var(--text-nav); text-decoration:none;
+  margin-left:18px; font-size:14px;
+}
+.navlinks a.on, .navlinks a:hover { color:var(--surface); }
+
+/* 6. Forms --------------------------------------------------------------- */
+input, select, textarea {
+  width:100%; padding:11px 13px; margin-bottom:12px;
+  border:1px solid var(--border); border-radius:7px;
+  font-size:14px; font-family:inherit;
+}
+input:focus, select:focus, textarea:focus {
+  outline:none; border-color:var(--navy-light);
+}
+
+label {
+  display:block; font-size:13px; font-weight:600;
+  margin-bottom:5px; color:var(--text-label);
+}
+
+/* 7. Buttons ------------------------------------------------------------- */
+.btn {
+  width:100%; padding:12px; border:none; border-radius:7px;
+  background:var(--amber); color:var(--surface);
+  font-size:15px; font-weight:600; cursor:pointer;
+}
+.btn:hover { background:var(--amber-dark); }
+.btn.slim  { width:auto; padding:8px 16px; font-size:13px; }
+.btn.ok    { background:var(--green); }
+.btn.bad   { background:var(--red); }
+
+/* 8. Cards & tabs (login page) ------------------------------------------- */
+.card {
+  background:var(--surface); border-radius:14px;
+  padding:34px 30px; box-shadow:var(--shadow-xl);
+}
+.auth { width:100%; max-width:380px; }
+
+.tabs { display:flex; gap:8px; margin-bottom:18px; }
+.tab {
+  flex:1; padding:9px; border:none; border-radius:7px;
+  background:var(--surface-alt); color:var(--text-mid);
+  font-size:14px; cursor:pointer;
+}
+.tab.active { background:var(--navy); color:var(--surface); }
+
+/* 9. Item grid (dashboard) ----------------------------------------------- */
+.filters { display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+.filters input  { flex:1; min-width:180px; margin:0; }
+.filters select { width:auto; margin:0; }
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(250px,1fr));
+  gap:14px;
+}
+
+.tile {
+  display:block; background:var(--surface); border-radius:10px;
+  padding:16px; text-decoration:none; color:inherit;
+  box-shadow:var(--shadow-sm);
+}
+.tile:hover  { box-shadow:var(--shadow-lg); }
+.tile h3     { margin:8px 0 5px; font-size:16px; }
+.tile p      { font-size:13px; color:var(--text-mid); margin-bottom:8px; }
+.tile small  { color:var(--text-muted); font-size:12px; }
+
+/* 10. Claim rows --------------------------------------------------------- */
+.row {
+  background:var(--surface); border-radius:10px; padding:16px;
+  margin-bottom:10px; display:flex; justify-content:space-between;
+  gap:16px; flex-wrap:wrap; box-shadow:var(--shadow-sm);
+}
+.actions { display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap; }
+
+/* 11. Status pills ------------------------------------------------------- */
+.pill {
+  display:inline-block; padding:3px 9px; border-radius:20px;
+  font-size:11px; font-weight:700; margin-right:5px;
+}
+.pill.found  { background:var(--green-bg); color:var(--green-dark); }
+.pill.lost   { background:var(--red-bg);   color:var(--red); }
+.pill.status { background:var(--surface-alt); color:var(--text-mid); }
+
+/* 12. Callouts & messages ------------------------------------------------ */
+.qbox {
+  background:var(--surface-soft); border-left:3px solid var(--amber);
+  padding:9px 12px; border-radius:5px; margin:8px 0; font-size:14px;
+}
+
+.note {
+  background:var(--surface-info); border-radius:8px;
+  padding:12px; margin-top:16px; font-size:14px;
+}
+
+.hint  { font-size:12px; color:var(--text-muted); margin-top:6px; }
+.muted { color:var(--text-muted); font-size:14px; }
+
+.msg {
+  text-align:center; font-size:13px; margin-top:12px; min-height:18px;
+}
+.msg.ok  { color:var(--green); }
+.msg.err { color:var(--red); }
+
+/* 13. Utilities ---------------------------------------------------------- */
+.hidden { display:none; }

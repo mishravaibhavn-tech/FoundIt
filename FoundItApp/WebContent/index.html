@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoundIt — Login</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="center">
+
+<div class="card auth">
+  <h1 class="logo">Found<span>It</span></h1>
+  <p class="tagline">Campus Lost &amp; Found Portal</p>
+
+  <div class="tabs">
+    <button class="tab active" id="tabLogin">Login</button>
+    <button class="tab" id="tabReg">Register</button>
+  </div>
+
+  <div id="paneLogin">
+    <input type="email" id="loginEmail" placeholder="College email">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button class="btn" id="btnLogin">Login</button>
+  </div>
+
+  <div id="paneReg" class="hidden">
+    <input type="text" id="regName" placeholder="Full name">
+    <input type="email" id="regEmail" placeholder="College email">
+    <input type="password" id="regPass" placeholder="Password (min 6)">
+    <button class="btn" id="btnReg">Create account</button>
+  </div>
+
+  <p id="msg" class="msg"></p>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+  tabLogin.onclick = () => swap(true);
+  tabReg.onclick   = () => swap(false);
+
+  function swap(login){
+    paneLogin.classList.toggle('hidden', !login);
+    paneReg.classList.toggle('hidden', login);
+    tabLogin.classList.toggle('active', login);
+    tabReg.classList.toggle('active', !login);
+    say('');
+  }
+
+  btnReg.onclick = async () => {
+    const d = await post('auth', {action:'register', name:regName.value.trim(),
+                                  email:regEmail.value.trim(), password:regPass.value});
+    say(d.message, d.success);
+    if (d.success) swap(true);
+  };
+
+  btnLogin.onclick = async () => {
+    const d = await post('auth', {action:'login', email:loginEmail.value.trim(),
+                                  password:loginPass.value});
+    if (d.success) location.href = 'dashboard.html';
+    else say(d.message, false);
+  };
+</script>
+</body>
+</html>

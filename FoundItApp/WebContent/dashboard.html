@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoundIt — Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="logo sm">Found<span>It</span></span>
+  <div class="navlinks">
+    <a href="dashboard.html" class="on">Browse</a>
+    <a href="report.html">Report item</a>
+    <a href="claims.html">My claims</a>
+    <a href="#" id="logout">Logout</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <h2>Lost &amp; Found items</h2>
+
+  <div class="filters">
+    <input type="text" id="q" placeholder="Search title or description…">
+    <select id="type">
+      <option value="">All</option>
+      <option value="FOUND">Found items</option>
+      <option value="LOST">Lost items</option>
+    </select>
+    <button class="btn slim" id="go">Search</button>
+  </div>
+
+  <div id="grid" class="grid"></div>
+  <p id="empty" class="muted hidden">Nothing here yet.</p>
+</main>
+
+<script src="js/app.js"></script>
+<script>
+  requireLogin();
+
+  async function load(){
+    const d = await get('items', {type:type.value, q:q.value.trim()});
+    grid.innerHTML = '';
+    empty.classList.toggle('hidden', d.items.length > 0);
+
+    d.items.forEach(it => {
+      const el = document.createElement('a');
+      el.className = 'tile';
+      el.href = 'item.html?id=' + it.itemId;
+      el.innerHTML =
+        `<span class="pill ${it.itemType.toLowerCase()}">${it.itemType}</span>
+         <span class="pill status">${it.status}</span>
+         <h3>${escapeHtml(it.title)}</h3>
+         <p>${escapeHtml(it.description || '')}</p>
+         <small>${escapeHtml(it.location || 'Location not given')} · by ${escapeHtml(it.poster)}</small>`;
+      grid.appendChild(el);
+    });
+  }
+
+  go.onclick = load;
+  q.addEventListener('keydown', e => { if (e.key === 'Enter') load(); });
+  load();
+</script>
+</body>
+</html>

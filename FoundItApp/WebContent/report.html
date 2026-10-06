@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoundIt — Report</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="logo sm">Found<span>It</span></span>
+  <div class="navlinks">
+    <a href="dashboard.html">Browse</a>
+    <a href="report.html" class="on">Report item</a>
+    <a href="claims.html">My claims</a>
+    <a href="#" id="logout">Logout</a>
+  </div>
+</nav>
+
+<main class="wrap narrow">
+  <h2>Report an item</h2>
+
+  <label>Type</label>
+  <select id="itemType">
+    <option value="FOUND">I found something</option>
+    <option value="LOST">I lost something</option>
+  </select>
+
+  <label>Title</label>
+  <input type="text" id="title" placeholder="e.g. Black wallet">
+
+  <label>Description (keep one detail secret!)</label>
+  <textarea id="description" rows="3" placeholder="Describe it, but leave out one identifying detail"></textarea>
+
+  <label>Where</label>
+  <input type="text" id="place" placeholder="e.g. Library, 2nd floor">
+
+  <label>Verification question</label>
+  <input type="text" id="secretQuestion" placeholder="e.g. What is the keychain attached to it?">
+  <p class="hint">Only the real owner should know the answer. You'll review answers before approving.</p>
+
+  <button class="btn" id="save">Post item</button>
+  <p id="msg" class="msg"></p>
+</main>
+
+<script src="js/app.js"></script>
+<script>
+  requireLogin();
+
+  save.onclick = async () => {
+    const d = await post('items', {
+      itemType: itemType.value,
+      title: title.value.trim(),
+      description: description.value.trim(),
+      location: place.value.trim(),
+      secretQuestion: secretQuestion.value.trim()
+    });
+    say(d.message, d.success);
+    if (d.success) setTimeout(() => location.href = 'dashboard.html', 900);
+  };
+</script>
+</body>
+</html>
