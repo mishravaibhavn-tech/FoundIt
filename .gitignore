@@ -1,0 +1,7 @@
+FoundItApp/build/
+FoundItApp/bin/
+FoundItApp/.settings/
+FoundItApp/.classpath
+FoundItApp/.project
+*.war
+.DS_Store
